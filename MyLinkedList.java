@@ -12,6 +12,12 @@ public class MyLinkedList<E>{
    return length;
  }
 
+ public void clear(){
+   length = 0;
+   start = null;
+   end = null;
+ }
+
  public boolean add(E value){
    Node n = new Node(value);
    if (length == 0){ //for empty list, special case
