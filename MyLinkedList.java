@@ -18,6 +18,17 @@ public class MyLinkedList<E>{
    end = null;
  }
 
+ public String toString(){
+   Node current = start; //start with the beginning node
+   String result = "[";
+   while (current != null){
+     result += current;
+     current = current.next();
+     if (current != null) result += ", ";
+   }
+   return result + "]";
+ }
+
  public boolean add(E value){
    Node n = new Node(value);
    if (length == 0){ //for empty list, special case
@@ -31,51 +42,6 @@ public class MyLinkedList<E>{
    }
    length++;
    return true;
- }
-
- public String toString(){
-   Node current = start; //start with the beginning node
-   String result = "[";
-   while (current != null){
-     result += current;
-     current = current.next();
-     if (current != null) result += ", ";
-   }
-   return result + "]";
- }
-
- private Node getNode(int n){ //no need to check for exceptions, all methods that use this already do so
-   Node current = start;
-   for (int i = 0; i < n; i++){
-     current = current.next();
-   }
-   return current;
- }
-
- public E get(int index){ //uses getNode, contains exceptions
-   if (index < 0 || index >= length) throw new IndexOutOfBoundsException();
-   return this.getNode(index).getData();
- }
-
- public E set(int index, E value){ //uses getNode, contains exceptions
-   if (index < 0 || index >= length) throw new IndexOutOfBoundsException();
-   E oldval = this.get(index);
-   this.getNode(index).setData(value);
-   return oldval;
- }
-
- public boolean contains(E value){
-   for (int i = 0; i < length; i++){
-     if (this.get(i).equals(value)) return true;
-   }
-   return false;
- }
-
- public int indexOf(E value){
-   for (int i = 0; i < length; i++){
-     if (this.get(i).equals(value)) return i;
-   }
-   return -1;
  }
 
  public void add(int index, E value){ //uses getNode, contains exceptions
@@ -99,35 +65,12 @@ public class MyLinkedList<E>{
    }
  }
 
- public E remove(int index){ //uses getNode, contains exceptions
-   if (index < 0 || index >= size()) throw new IndexOutOfBoundsException();
-   Node value = getNode(index); //stores for return later
-   if (index == 0){
-     if (length == 1){
-       start = null;
-       end = null;
-     }
-     else{
-       start = value.next();
-       start.setPrev(null);
-     }
+ private Node getNode(int n){ //no need to check for exceptions, all methods that use this already do so
+   Node current = start;
+   for (int i = 0; i < n; i++){
+     current = current.next();
    }
-   else if (index == size() - 1){
-     value.prev().setNext(null);
-     end = value.prev();
-   }
-   else{
-     value.next().setPrev(value.prev());
-     value.prev().setNext(value.next()); //value now no longer exists
-   }
-   length--;
-   return value.getData();
- }
-
- public boolean remove(E value){ //uses indexOf
-   if (!(contains(value))) return false;
-   remove(indexOf(value));
-   return true;
+   return current;
  }
 
  public void extend(MyLinkedList<E> other){ //constant runtime
@@ -195,6 +138,14 @@ public class MyLinkedList<E>{
   public String toString(){
     return "" + data;
   }
+ }
+
+ public static void main(String[] args) {
+   MyLinkedList<Integer> data = new MyLinkedList();
+   data.add(1);
+   //data.add(3);
+   //System.out.println(data.removeFront());
+   System.out.println(data.toString());
  }
 
 }
