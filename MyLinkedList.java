@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class MyLinkedList<E>{
  private int length;
  public Node start,end;
@@ -93,7 +95,18 @@ public class MyLinkedList<E>{
  }
 
  public E removeFront(){
-   return start.getData();
+   if (length == 0) throw new NoSuchElementException(); //if empty list
+   E old_val = start.getData(); //temporary storage for first value
+   if (length == 1){ //if only one element present in list
+     clear(); //clear the list
+     //System.out.println("end: " + end);
+   }
+   else{
+     start = start.next(); //next element
+     start.setPrev(null); //set the prev to null
+     length--; //decrease length
+   }
+   return old_val; //return stored value
  }
 
  class Node{
@@ -146,13 +159,5 @@ public class MyLinkedList<E>{
     return "" + data;
   }
  }
-
- public static void main(String[] args){
-   MyLinkedList<Integer> data = new MyLinkedList();
-   data.add(1);
-   //data.add(3);
-   //System.out.println(data.removeFront());
-   System.out.println(data.toString());
- }
-
+ 
 }
