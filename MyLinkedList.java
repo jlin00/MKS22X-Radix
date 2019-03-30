@@ -3,7 +3,7 @@ public class MyLinkedList<E>{
  public Node start,end;
 
 //constructor
- public MyLinkedList(){
+ public MyLinkedList(){ //construct an empty list
    length = 0;
  }
 
@@ -12,8 +12,8 @@ public class MyLinkedList<E>{
    return length;
  }
 
- public void clear(){
-   length = 0;
+ public void clear(){ //resets list to empty state
+   length = 0; //sets length to zero
    start = null;
    end = null;
  }
@@ -29,7 +29,7 @@ public class MyLinkedList<E>{
    return result + "]";
  }
 
- public boolean add(E value){
+ public boolean add(E value){ //add element to the end of the list
    Node n = new Node(value);
    if (length == 0){ //for empty list, special case
      start = n; //set start node
@@ -84,9 +84,16 @@ public class MyLinkedList<E>{
      end = other.end; //sets end of the two lists combined to the other end
    }
    length += other.length;//adjusts length of combined lists
+   other.clear();
+   /*
    other.start = null; //erases other
    other.end = null;
    other.length = 0;
+   */
+ }
+
+ public E removeFront(){
+   return start.getData();
  }
 
  class Node{
@@ -140,7 +147,7 @@ public class MyLinkedList<E>{
   }
  }
 
- public static void main(String[] args) {
+ public static void main(String[] args){
    MyLinkedList<Integer> data = new MyLinkedList();
    data.add(1);
    //data.add(3);
