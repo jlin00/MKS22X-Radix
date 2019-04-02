@@ -17,7 +17,7 @@ public class Radix{
         int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10);
         //System.out.println(idx);
         if (num >= 0) buckets[idx + 10].add(num);
-        if (num < 0) buckets[9 - idx].add(num); //add number to bucket based on retrieved digit
+        else buckets[9 - idx].add(num); //add number to bucket based on retrieved digit
       }
       for (int k = 1; k < 20; k++){ //combine buckets into first bucket, which clears the rest
         buckets[0].extend(buckets[k]);
@@ -46,5 +46,9 @@ public class Radix{
     int[] data1 = {0, 1, 0, 100000, -121, -200012, 3231, 0};
     radixsort(data1);
     System.out.println(Arrays.toString(data1));
+
+    int[] data2 = {0, 0, 0, 0, 1, 3, 2, -4, -5, -55, -21, -100, 32, 1999, -20100};
+    radixsort(data2);
+    System.out.println(Arrays.toString(data2));
   }
 }
