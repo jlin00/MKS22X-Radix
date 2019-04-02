@@ -9,23 +9,37 @@ public class Radix{
     }
     int passes = max(data); //finds number of digits in maximum value of data
     //System.out.println(passes);
+    MyLinkedList<Integer> list = new MyLinkedList<Integer>();
     for (int i = 0; i < passes; i++){ //loops through number of passes
-      //adds data to buckets
-      for (int j = 0; j < data.length; j++){ //for each number in the data set
-        int num = data[j]; //temporary storage for the number
-        //divides number by a power of ten in increasing order and retrieves last digit
-        int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10); //absolute value of digit retrieved
-        //System.out.println(idx);
-        if (num >= 0) buckets[idx + 10].add(num); //if positive add to buckets 10-19
-        else buckets[9 - idx].add(num); //else add to buckets 0-9 in inverted order
+      if (i == 0){ //first pass
+        //adds data to buckets
+        for (int j = 0; j < data.length; j++){ //for each number in the data set
+          int num = data[j]; //temporary storage for the number
+          //divides number by a power of ten in increasing order and retrieves last digit
+          int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10); //absolute value of digit retrieved
+          if (num >= 0) buckets[idx + 10].add(num); //if positive add to buckets 10-19
+          else buckets[9 - idx].add(num); //else add to buckets 0-9 in inverted order
+        }
       }
-      for (int k = 1; k < 20; k++){ //combine all 20 buckets into first bucket, which clears the rest
-        buckets[0].extend(buckets[k]);
+
+      else{
+        while (list.size() > 0){
+          int num = list.removeFront();
+          int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10); //absolute value of digit retrieved
+          if (num >= 0) buckets[idx + 10].add(num); //if positive add to buckets 10-19
+          else buckets[9 - idx].add(num); //else add to buckets 0-9 in inverted order
+        }
       }
-      for (int l = 0; l < data.length; l++){ //copies bucket into data
-        data[l] = buckets[0].removeFront(); //copies over value in exact order
+
+      for (int k = 0; k < 20; k++){ //combine all 20 buckets into first bucket, which clears the rest
+        list.extend(buckets[k]);
       }
-      buckets[0].clear(); //clears last bucket
+    }
+    //System.out.println(list.toString());
+    int idx = 0;
+    while (list.size() > 0){
+      data[idx] = list.removeFront();
+      idx++;
     }
   }
 
