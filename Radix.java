@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Radix{
   public static void radixsort(int[] data){
-    MyLinkedList<Integer>[] buckets = new MyLinkedList[10]; //makes ten buckets for digits 0-9
+    MyLinkedList<Integer>[] buckets = new MyLinkedList[20]; //makes ten buckets for digits 0-9
     for (int i = 0; i < buckets.length; i++){
       buckets[i] = new MyLinkedList<Integer>(); //initializes each bucket
     }
@@ -14,25 +14,26 @@ public class Radix{
       for (int j = 0; j < data.length; j++){ //for each number in the data set
         int num = data[j]; //temporary storage for the number
         //divides number by a power of twen in increasing order and retrieves last digit
-        int idx = (int)(num / (Math.pow(10, i))) % 10;
+        int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10);
         //System.out.println(idx);
-        buckets[idx].add(num); //add number to bucket based on retrieved digit
+        if (num >= 0) buckets[idx + 10].add(num);
+        if (num < 0) buckets[9 - idx].add(num); //add number to bucket based on retrieved digit
       }
-      for (int k = 1; k < 10; k++){ //combine buckets into first bucket, which clears the rest
+      for (int k = 1; k < 20; k++){ //combine buckets into first bucket, which clears the rest
         buckets[0].extend(buckets[k]);
       }
       for (int l = 0; l < data.length; l++){ //copies bucket into data
-        data[l] = buckets[0].removeFront();
+        data[l] = buckets[0].removeFront(); //copies over value in exact order
       }
-      buckets[0].clear(); //clears last bucket 
+      buckets[0].clear(); //clears last bucket
     }
   }
 
   public static int max(int[] data){
     if (data.length == 0) return 0; //if no elements, zero passes
-    int max = data[0]; //temporary storage
+    int max = Math.abs(data[0]); //temporary storage
     for (int i = 0; i < data.length; i++){
-      if (data[i] > max) max = data[i]; //find max
+      if (Math.abs(data[i]) > max) max = Math.abs(data[i]); //find max
      }
     return (int)Math.log10(max) + 1; //integer max + 1
   }
@@ -42,7 +43,7 @@ public class Radix{
     radixsort(data);
     System.out.println(Arrays.toString(data));
 
-    int[] data1 = {0, 1, 0, 100000, 121, 200012, 3231, 0};
+    int[] data1 = {0, 1, 0, 100000, -121, -200012, 3231, 0};
     radixsort(data1);
     System.out.println(Arrays.toString(data1));
   }
