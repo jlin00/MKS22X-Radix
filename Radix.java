@@ -3,7 +3,23 @@
 public class Radix{
   public static void radixsort(int[] data){
     MyLinkedList<Integer>[] buckets = new MyLinkedList[10]; //makes ten buckets for digits 0-9
+    MyLinkedList<Integer> list = new MyLinkedList<Integer>(); //all the buckets go in here eventually
+    for (int el : data){
+      list.add(el);
+    }
     int passes = max(data); //finds number of digits in maximum value of data
+    for (int i = 1; i < passes; i++){ //loops through number of passes
+      for (int j = 0; j < list.size(); j++){
+        int num = list.removeFront();
+        int idx = (int)(num / Math.pow(10, i - 1)) % 10;
+        buckets[idx].add(num);
+      }
+      for (int k = 1; k < 10; k++){
+        buckets[0].extend(buckets[k]);
+      }
+      list = buckets[0];
+      buckets[0].clear();
+    }
   }
 
   public static int max(int[] data){
