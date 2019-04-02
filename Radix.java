@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Radix{
   public static void radixsort(int[] data){
-    MyLinkedList<Integer>[] buckets = new MyLinkedList[20]; //makes ten buckets for digits 0-9
+    MyLinkedList<Integer>[] buckets = new MyLinkedList[20]; //makes ten buckets for digits 0-19 (negative and positive)
     for (int i = 0; i < buckets.length; i++){
       buckets[i] = new MyLinkedList<Integer>(); //initializes each bucket
     }
@@ -13,13 +13,13 @@ public class Radix{
       //adds data to buckets
       for (int j = 0; j < data.length; j++){ //for each number in the data set
         int num = data[j]; //temporary storage for the number
-        //divides number by a power of twen in increasing order and retrieves last digit
-        int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10);
+        //divides number by a power of ten in increasing order and retrieves last digit
+        int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10); //absolute value of digit retrieved
         //System.out.println(idx);
-        if (num >= 0) buckets[idx + 10].add(num);
-        else buckets[9 - idx].add(num); //add number to bucket based on retrieved digit
+        if (num >= 0) buckets[idx + 10].add(num); //if positive add to buckets 10-19
+        else buckets[9 - idx].add(num); //else add to buckets 0-9 in inverted order
       }
-      for (int k = 1; k < 20; k++){ //combine buckets into first bucket, which clears the rest
+      for (int k = 1; k < 20; k++){ //combine all 20 buckets into first bucket, which clears the rest
         buckets[0].extend(buckets[k]);
       }
       for (int l = 0; l < data.length; l++){ //copies bucket into data
