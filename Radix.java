@@ -7,16 +7,22 @@ public class Radix{
     for (int i = 0; i < buckets.length; i++){
       buckets[i] = new MyLinkedList<Integer>(); //initializes each bucket
     }
-    int passes = max(data); //finds number of digits in maximum value of data
+    
+    int passes = 0;
+    for (int i = 0; i < data.length; i++){
+      if (Math.abs(data[i]) > passes){
+        passes = Math.abs(data[i]);
+      }
+    }
+    passes = (int)Math.log10(passes) + 1;
     //System.out.println(passes);
     MyLinkedList<Integer> list = new MyLinkedList<Integer>();
     for (int i = 0; i < passes; i++){ //loops through number of passes
       if (i == 0){ //first pass
         //adds data to buckets
-        for (int j = 0; j < data.length; j++){ //for each number in the data set
-          int num = data[j]; //temporary storage for the number
+        for (int num: data){ //for each number in the data set
           //divides number by a power of ten in increasing order and retrieves last digit
-          int idx = Math.abs((int)(num / (Math.pow(10, i))) % 10); //absolute value of digit retrieved
+          int idx = num % 10; //absolute value of digit retrieved
           if (num >= 0) buckets[idx + 10].add(num); //if positive add to buckets 10-19
           else buckets[9 - idx].add(num); //else add to buckets 0-9 in inverted order
         }
@@ -31,25 +37,14 @@ public class Radix{
         }
       }
 
-      for (int k = 0; k < 20; k++){ //combine all 20 buckets into first bucket, which clears the rest
-        list.extend(buckets[k]);
+      for (int j = 0; j < 20; j++){ //combine all 20 buckets into first bucket, which clears the rest
+        list.extend(buckets[j]);
       }
     }
     //System.out.println(list.toString());
-    int idx = 0;
-    while (list.size() > 0){
-      data[idx] = list.removeFront();
-      idx++;
-    }
-  }
-
-  public static int max(int[] data){
-    if (data.length == 0) return 0; //if no elements, zero passes
-    int max = Math.abs(data[0]); //temporary storage
     for (int i = 0; i < data.length; i++){
-      if (Math.abs(data[i]) > max) max = Math.abs(data[i]); //find max
-     }
-    return (int)Math.log10(max) + 1; //integer max + 1
+      data[i] = list.removeFront();
+    }
   }
 
   public static void main(String[] args) {
